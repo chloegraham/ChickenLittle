@@ -14,6 +14,10 @@ import javax.swing.JPanel;
 
 import chickenlittle.control.Listener;
 
+/**
+ * 
+ * @author Thorbukirs
+ */
 public class BoardFrame extends JFrame {
 	private final JPanel BORDER = new JPanel();
 	private final Listener LISTENER;

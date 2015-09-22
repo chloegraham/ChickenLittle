@@ -115,8 +115,8 @@ public class Main {
 			case MainMenuDialog.JOINGAME:
 				joinGame();
 				break;
-			case MainMenuDialog.TESTFRAME:	// Test the game frame. May cause crashes.
-				new Listener(null).testFrame();
+			case MainMenuDialog.TESTFRAME:	// Test the game frame
+				new Listener().run();
 				break;
 			case MainMenuDialog.QUIT:
 				EXIT = true;

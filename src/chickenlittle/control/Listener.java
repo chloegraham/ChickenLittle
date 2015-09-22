@@ -6,10 +6,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.net.Socket;
 
 import chickenlittle.gui.BoardCanvas;
 import chickenlittle.gui.BoardFrame;
@@ -21,19 +17,17 @@ import chickenlittle.control.Action.Actions;
  * @author Thorbukirs
  */
 public class Listener implements KeyListener, MouseListener, ActionListener {
-	// Stores the direction the screen is currently being stored at. Key Events are be rotated to match, must remain in this order.
+	// Stores the direction the screen is currently being stored at. Key Events are rotated to match, must remain in this order.
 	private final Actions[] ROTATION = new Actions[]{Actions.NORTH, Actions.EAST, Actions.SOUTH, Actions.WEST};
 	private int DIR = 0;
 	
 	private final Actions[] ACTIONS;	// All possible movements the player may make
 	
 	// TODO Network Connection information here ...
-	private final Socket socket;
-	private DataOutputStream output;
-	private DataInputStream input;
+	private InputTesting input;
+	private BoardFrame frame;
 	
-	public Listener(Socket socket) {
-		this.socket = socket;
+	public Listener() {
 		ACTIONS = Actions.values();
 	}
 	
@@ -42,40 +36,17 @@ public class Listener implements KeyListener, MouseListener, ActionListener {
 	 * Updates the local board from the input stream and displays it.
 	 */
 	public void run(){
-		try {
-			output = new DataOutputStream(socket.getOutputStream());
-			input = new DataInputStream(socket.getInputStream());
-			
-			// TODO read setup input
-			
-			// create new BoardFrame for this client
-			
-			boolean exit = false;
-			while (!exit){												/*Game Loop*/
-				// TODO read input data, update game, repaint BoardFrame
-			}
-			
-			socket.close();
-		} catch(IOException e) {
-			System.err.println("I/O Error: " + e.getMessage());
-			e.printStackTrace(System.err);
-		}
-	}
-	
-	/**
-	 * Method for testing JFrame. May cause crashes, use with caution.
-	 */
-	public void testFrame(){
-		BoardFrame frame = new BoardFrame("Chicken Little v0.1", new BoardCanvas(), this);
+		input = new InputTesting();
+		BoardCanvas renderer = new BoardCanvas(input.getMoveable());
+		frame = new BoardFrame("Chicken Little v0.1", renderer, this);		// TODO Rendering window assigned in here
 		frame.setVisible(true);
+
 		boolean exit = false;
-		while (!exit){
-			
-		}
+		while (!exit){}												/* Game Loop */
 	}
 	
 	@Override
-	public void actionPerformed(ActionEvent e) {	// TODO
+	public void actionPerformed(ActionEvent e) {
 		// Use mnemonics to perform actions on the Application Window
 		// Any single key presses should be added to the END of the Actions enum set and checked for separately
 	}
@@ -89,7 +60,8 @@ public class Listener implements KeyListener, MouseListener, ActionListener {
 			if (ROTATION[i].getKeyCode() == event){
 				int send = i + DIR;			// If the screen has been rotated, the direction will be changed.
 				if (send > 3){ send -= 4; }
-				// TODO ROTATION[send].ordinal()  to be sent through connection
+				input.performAction(ROTATION[send].ordinal());
+				frame.repaint();
 				return;
 			}
 		}
@@ -97,7 +69,8 @@ public class Listener implements KeyListener, MouseListener, ActionListener {
 		/* All other keys must be sent directly through the server. Find the ordinal and send it. */
 		for (Actions ac : ACTIONS){
 			if (ac.getKeyCode() == event){
-				// TODO ac.ordinal()   to be sent through connection
+				input.performAction(ac.ordinal());
+				frame.repaint();
 				return;
 			}
 		}

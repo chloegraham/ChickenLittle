@@ -16,14 +16,8 @@ public class Action {
 	 * 		import chickenlittle.control.Action.Actions;
 	 * Use the server input to retrieve the action type. Input will be an int.
 	 * Do not try to hard code in an int! Always use .ordinal()
-	 * Examples:
+	 * Example:
 	 * 	if (Actions.NORTH.ordinal() == input){ System.out.println("Valid input"); }
-	 * 
-	 *	Switch (input){
-	 * 		case Actions.NORTH.ordinal():
-	 * 			System.out.println("Valid input");
-	 * 			break;
-	 *	}
 	 * 
 	 * @author Thorbukirs
 	 */
