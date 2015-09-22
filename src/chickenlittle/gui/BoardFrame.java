@@ -1,13 +1,16 @@
 package chickenlittle.gui;
 
-import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -15,35 +18,69 @@ import javax.swing.JPanel;
 import chickenlittle.control.Listener;
 
 /**
- * 
+ * The application window for the game. Sets up window sizes and buttons available to the user.
  * @author Thorbukirs
  */
 public class BoardFrame extends JFrame {
 	private final JPanel BORDER = new JPanel();
 	private final Listener LISTENER;
-	private final BoardCanvas CANVAS;		// Rendering window
+	private final RenderPane RENDER;
+	
+	/* Determine size of game window */
+	private static final int frameWidth = 800;
+	private static final int frameHeight = 600;
+	private static final Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+	
+	public static final Dimension FRAMESIZE = new Dimension(frameWidth, frameHeight);
+	public static final int FRAMEX = (int) ((dim.getWidth() / 2)-(frameWidth / 2));
+	public static final int FRAMEY = (int) ((dim.getHeight() / 2)-(frameHeight / 2));
 	
 	/**
-	 * Sets up the window to display the Cluedo game and all controls/menus.
+	 * Sets up the window to display the game and all controls/menus.
 	 * Adds Action, Key & Mouse listeners.
 	 */
-	public BoardFrame(String version, BoardCanvas renderingWindow, Listener listener) {
+	public BoardFrame(String version, RenderPane renderingWindow, Listener listener) {
 		super(version);
-		LISTENER = listener;
-		CANVAS = renderingWindow;
-		CANVAS.setFocusable(true);
 		
+		LISTENER = listener;
+		RENDER = renderingWindow;
+		
+		buildBorderPanel();
 		addListeners();
 		
-		/* TODO all layers */
-		BORDER.setLayout(new BorderLayout());
-		BORDER.add(CANVAS, BorderLayout.CENTER);
-		this.add(BORDER);
+		/* TODO Set up game menus */
 		
-		/* TODO set layer sizes, positioning & decoration */
-		this.setPreferredSize(new Dimension(800, 800));
-
+		
+		add(BORDER);
+		
+		/* Set sizes, locations and decoration options for the full frame. */
+		this.setPreferredSize(FRAMESIZE);
+		this.setLocation(FRAMEX, FRAMEY);	// Position in centre of screen
+		//this.setUndecorated(true);
+		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.pack();
+	}
+	
+	/**
+	 * Builds the Panel that displays the game graphics. Includes a solid black border around the Renderer.  
+	 */
+	private void buildBorderPanel(){
+		BoxLayout layout = new BoxLayout(BORDER, BoxLayout.Y_AXIS);
+		BORDER.setLayout(layout);
+		
+		// Add Renderer to the centre of the panel
+		BORDER.add(Box.createVerticalGlue());
+		BORDER.add(RENDER);
+		BORDER.add(Box.createVerticalGlue());
+		
+		// Set size, alignment and background colour
+		Dimension rendererSize = new Dimension(frameWidth-50, frameHeight-50);
+		RENDER.setMaximumSize(rendererSize);		// leave a small border around the Renderer
+		RENDER.setPreferredSize(rendererSize);
+		RENDER.setAlignmentX(CENTER_ALIGNMENT);
+		
+		BORDER.setPreferredSize(FRAMESIZE);
+		BORDER.setBackground(Color.black);
 	}
 
 	/**
@@ -51,11 +88,13 @@ public class BoardFrame extends JFrame {
 	 * Requests confirmation and closes the system if player tries to close the window.
 	 */
 	private void addListeners(){
-		CANVAS.addKeyListener(LISTENER);
-		CANVAS.addMouseListener(LISTENER);
-		CANVAS.addFocusListener(new FocusAdapter() {		// Reclaim focus when lost
+		RENDER.setFocusable(true);
+		
+		RENDER.addKeyListener(LISTENER);
+		RENDER.addMouseListener(LISTENER);
+		RENDER.addFocusListener(new FocusAdapter() {		// Reclaim focus when lost
 	          public void focusLost(FocusEvent ev) {
-	            CANVAS.requestFocus();
+	            RENDER.requestFocus();
 	          }
 	        });
 

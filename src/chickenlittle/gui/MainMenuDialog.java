@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -21,7 +20,6 @@ import javax.swing.border.LineBorder;
  * @author Thorbukirs
  */
 public class MainMenuDialog extends JDialog implements ActionListener {
-
 	/* All actions available to user.
 	 * Each should have a JButton at the matching ordinal. */
 	private JButton[] buttonArr = new JButton[]{ new JButton("Connect"), new JButton("New Game"),
@@ -46,13 +44,11 @@ public class MainMenuDialog extends JDialog implements ActionListener {
 	public MainMenuDialog() {
 		super(FRAME, true);
 		
-		// Assign all window sizes
+		// Determine panel sizes
 		final int btnHeight = 40;
 		final int textHeight = btnHeight*2;
 		final int menuWidth = 300;
 		final int menuHeight = buttonArr.length * btnHeight;
-		final int frameWidth = menuWidth + 500;
-		final int frameHeight = menuHeight + textHeight + 300;
 		
 		// Set up JTextPane
 		TEXT.setMaximumSize(new Dimension(menuWidth, textHeight));
@@ -64,18 +60,15 @@ public class MainMenuDialog extends JDialog implements ActionListener {
 		// Create display panel (buttons, text and background)
 		JPanel buttonPane = createButtonPane(menuWidth, menuHeight, new Dimension(menuWidth, btnHeight));
 		JPanel infoPane = createInfoPane(menuWidth, menuHeight+textHeight, buttonPane);
-		JPanel displayPane = createDisplayPane(menuWidth, frameHeight, infoPane);
+		JPanel displayPane = createDisplayPane(menuWidth, (int) BoardFrame.FRAMESIZE.getHeight(), infoPane);
 		this.setContentPane(displayPane);
 
 		// Decoration settings
-		this.setPreferredSize(new Dimension(frameWidth, frameHeight));
-		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		int centreX = (int) (dim.getWidth() / 2);
-		int centreY = (int) (dim.getHeight() / 2);
-		this.setLocation(centreX-(frameWidth/2), centreY-(frameHeight/2));	// Position in centre of screen
+		this.setPreferredSize(BoardFrame.FRAMESIZE);
+		this.setLocation(BoardFrame.FRAMEX, BoardFrame.FRAMEY);	// Position in centre of screen
 		this.setUndecorated(true);
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		pack();
+		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		this.pack();
 	}
 	
 	/**

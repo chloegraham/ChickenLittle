@@ -11,17 +11,17 @@ import chickenlittle.control.MoveableTemp;
  * Placeholder for renderer while building user interface.
  * @author Thorbukirs
  */
-public class BoardCanvas extends JPanel {
+public class RenderPane extends JPanel {
 	// Players draw themselves
 	private final MoveableTemp obj;
 	
 	// Original board
-	private int[][] array = new int[20][10];
+	private int[][] array = new int[100][100];
 	private final int squareSize = 25;
 	
-	public BoardCanvas(MoveableTemp obj) {
+	public RenderPane(MoveableTemp obj) {
 		super();
-		setBackground(Color.white);
+		setBackground(Color.black);
 		this.obj = obj;
 	}
 	

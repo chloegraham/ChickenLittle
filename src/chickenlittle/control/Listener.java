@@ -7,7 +7,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import chickenlittle.gui.BoardCanvas;
+import chickenlittle.gui.RenderPane;
 import chickenlittle.gui.BoardFrame;
 import chickenlittle.control.Action.Actions;
 
@@ -37,7 +37,7 @@ public class Listener implements KeyListener, MouseListener, ActionListener {
 	 */
 	public void run(){
 		input = new InputTesting();
-		BoardCanvas renderer = new BoardCanvas(input.getMoveable());
+		RenderPane renderer = new RenderPane(input.getMoveable());
 		frame = new BoardFrame("Chicken Little v0.1", renderer, this);		// TODO Rendering window assigned in here
 		frame.setVisible(true);
 
