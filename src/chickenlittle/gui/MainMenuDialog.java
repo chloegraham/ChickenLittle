@@ -16,8 +16,7 @@ import javax.swing.border.LineBorder;
 
 /**
  * Creates the Main Menu dialog window, manages the user's input until a game state is entered
- * 
- * @author Thorbukirs
+ * @author Kirsty
  */
 public class MainMenuDialog extends JDialog implements ActionListener {
 	/* All actions available to user.
@@ -60,12 +59,12 @@ public class MainMenuDialog extends JDialog implements ActionListener {
 		// Create display panel (buttons, text and background)
 		JPanel buttonPane = createButtonPane(menuWidth, menuHeight, new Dimension(menuWidth, btnHeight));
 		JPanel infoPane = createInfoPane(menuWidth, menuHeight+textHeight, buttonPane);
-		JPanel displayPane = createDisplayPane(menuWidth, (int) BoardFrame.FRAMESIZE.getHeight(), infoPane);
+		JPanel displayPane = createDisplayPane(menuWidth, (int) GameInterface.FRAMESIZE.getHeight(), infoPane);
 		this.setContentPane(displayPane);
 
 		// Decoration settings
-		this.setPreferredSize(BoardFrame.FRAMESIZE);
-		this.setLocation(BoardFrame.FRAMEX, BoardFrame.FRAMEY);	// Position in centre of screen
+		this.setPreferredSize(GameInterface.FRAMESIZE);
+		this.setLocation(GameInterface.FRAMEX, GameInterface.FRAMEY);	// Position in centre of screen
 		this.setUndecorated(true);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.pack();

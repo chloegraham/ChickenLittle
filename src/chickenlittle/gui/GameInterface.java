@@ -19,16 +19,16 @@ import chickenlittle.control.Listener;
 
 /**
  * The application window for the game. Sets up window sizes and buttons available to the user.
- * @author Thorbukirs
+ * @author Kirsty
  */
-public class BoardFrame extends JFrame {
-	private final JPanel BORDER = new JPanel();
+public class GameInterface extends JFrame {
 	private final Listener LISTENER;
-	private final RenderPane RENDER;
+	private final RenderPane RENDERER;
+	private final JPanel BORDER = new JPanel();
 	
 	/* Determine size of game window */
-	private static final int frameWidth = 800;
-	private static final int frameHeight = 600;
+	private static final int frameWidth = 850;
+	private static final int frameHeight = 650;
 	private static final Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 	
 	public static final Dimension FRAMESIZE = new Dimension(frameWidth, frameHeight);
@@ -39,17 +39,15 @@ public class BoardFrame extends JFrame {
 	 * Sets up the window to display the game and all controls/menus.
 	 * Adds Action, Key & Mouse listeners.
 	 */
-	public BoardFrame(String version, RenderPane renderingWindow, Listener listener) {
-		super(version);
+	public GameInterface(Listener listener, RenderPane renderer) {
+		super("Chicken Little");
 		
-		LISTENER = listener;
-		RENDER = renderingWindow;
-		
+		this.RENDERER = renderer;
+		this.LISTENER = listener;
 		buildBorderPanel();
 		addListeners();
 		
-		/* TODO Set up game menus */
-		
+		/* TODO Set up layered game menus */
 		
 		add(BORDER);
 		
@@ -70,14 +68,14 @@ public class BoardFrame extends JFrame {
 		
 		// Add Renderer to the centre of the panel
 		BORDER.add(Box.createVerticalGlue());
-		BORDER.add(RENDER);
+		BORDER.add(RENDERER);
 		BORDER.add(Box.createVerticalGlue());
 		
 		// Set size, alignment and background colour
 		Dimension rendererSize = new Dimension(frameWidth-50, frameHeight-50);
-		RENDER.setMaximumSize(rendererSize);		// leave a small border around the Renderer
-		RENDER.setPreferredSize(rendererSize);
-		RENDER.setAlignmentX(CENTER_ALIGNMENT);
+		RENDERER.setMaximumSize(rendererSize);		// leave a small border around the Renderer
+		RENDERER.setPreferredSize(rendererSize);
+		RENDERER.setAlignmentX(CENTER_ALIGNMENT);
 		
 		BORDER.setPreferredSize(FRAMESIZE);
 		BORDER.setBackground(Color.black);
@@ -88,13 +86,13 @@ public class BoardFrame extends JFrame {
 	 * Requests confirmation and closes the system if player tries to close the window.
 	 */
 	private void addListeners(){
-		RENDER.setFocusable(true);
+		RENDERER.setFocusable(true);
 		
-		RENDER.addKeyListener(LISTENER);
-		RENDER.addMouseListener(LISTENER);
-		RENDER.addFocusListener(new FocusAdapter() {		// Reclaim focus when lost
+		RENDERER.addKeyListener(LISTENER);
+		RENDERER.addMouseListener(LISTENER);
+		RENDERER.addFocusListener(new FocusAdapter() {		// Reclaim focus when lost
 	          public void focusLost(FocusEvent ev) {
-	            RENDER.requestFocus();
+	            RENDERER.requestFocus();
 	          }
 	        });
 
