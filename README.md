@@ -11,3 +11,5 @@ Implemented a fully functional structure, refactor/replace classes with anything
 	move Up:	w
 	Camera Rotate Left:		7 (Numpad)	(Currently only rotates key controls, not graphics) 
 	Camera Rotate Right:	9 (Numpad)
+test
+test2
